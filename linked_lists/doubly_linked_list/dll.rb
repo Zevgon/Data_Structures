@@ -7,10 +7,16 @@ class DLL
 		@tail = Link.new(nil)
 		@head.next = @tail
 		@tail.prev = @head
+		@length = 0
+	end
+
+	def empty?
+		@head.next == @tail
 	end
 
 	def insert(val_or_link)
 		#0(1)
+		@length += 1
 		if val_or_link.is_a?(Link)
 			new_link = val_or_link
 		else
@@ -56,20 +62,22 @@ class DLL
 
 	def remove(link)
 		#0(1)
+		return nil if empty?
+		@length -= 1
 		link.prev.next = link.next
 		link.next.prev = link.prev
 		link
 	end
 
 	def promote(link)
+		return nil if empty?
 		link = remove(link)
 		insert(link)
 	end
 
 	def pop
-		popped_item = @tail.prev
-		@tail.prev.prev.next = @tail
-		@tail.prev = @tail.prev.prev
-		popped_item
+		return nil if empty?
+		@length -= 1
+		remove(@tail.prev)
 	end
 end
