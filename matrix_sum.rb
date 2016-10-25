@@ -7,7 +7,7 @@ class MatrixSum
 
 	def [](pos)
 		i, j = pos
-		@store[i][j]
+		decontaminate(i, j)
 	end
 
 	def insert(n)
@@ -29,7 +29,7 @@ class MatrixSum
 			idx += 1
 		end
 		@length += 1
-		self[[row_num, idx]] = sum
+		@store[row_num][idx] = sum
 	end
 
 	def sum_of_square(top_left, bottom_right)
@@ -37,10 +37,10 @@ class MatrixSum
 		bottom_i, bottom_j = bottom_right
 		sum = 0
 		while bottom_i >= top_i
-			sum += self[[bottom_i, bottom_j]]
+			sum += @store[bottom_i][bottom_j]
 			idx = 0
 			until idx == top_j
-				contaminant = self[[bottom_i, idx]]
+				contaminant = @store[bottom_i][idx]
 				sum -= contaminant * (top_j - idx + 1)
 				idx += 1
 			end
@@ -48,6 +48,18 @@ class MatrixSum
 		end
 
 		sum
+	end
+
+	def decontaminate(row, col)
+		contaminated = @store[row][col]
+		idx = 0
+		while idx < col
+			contaminant = @store[row][idx]
+			contaminated -= contaminant
+			idx += 1
+		end
+
+		contaminated
 	end
 
 	alias_method :<<, :insert
@@ -61,4 +73,5 @@ end
 m = MatrixSum.new(3)
 m << [1, 2, 3, 4, 5, 6, 7, 8, 9]
 m.to_s
-p m.sum_of_square([0, 0], [2, 2])
+p m.sum_of_square([0, 0], [1, 1])
+p m[[1, 1]]
