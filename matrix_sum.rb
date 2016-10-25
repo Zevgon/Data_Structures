@@ -10,11 +10,6 @@ class MatrixSum
 		@store[i][j]
 	end
 
-	def []=(pos, val)
-		i, j = pos
-		@store[i][j] = val
-	end
-
 	def insert(n)
 		if n.is_a?(Array)
 			n.each do |number|
