@@ -103,16 +103,24 @@ class HeapDict:
 
 	ins = insert
 
+	def length(self):
+		return len(self.store)
+
+	len = length
+
 	def parent_idx(self, idx):
 		if idx % 2 == 0:
 			return idx / 2 - 1
 		else:
 			return idx / 2
 
+	def peek(self):
+		return self.store[0]
 
 	def pop(self):
 		item = self.store.pop()
 		self.dict[item].remove(len(self.store))
+		return item
 
 	def should_swap(self, parent_idx, idx):
 		if idx >= len(self.store) or parent_idx < 0:
@@ -136,15 +144,15 @@ class HeapDict:
 	def swap(self, parent_idx, idx):
 		item1 = self.store[parent_idx]
 		item2 = self.store[idx]
-		self.dict[item1].add(idx)
-		self.dict[item1].remove(parent_idx)
-		self.dict[item2].add(parent_idx)
-		self.dict[item2].remove(idx)
+		if not self.prc(item1) == self.prc(item2):
+			self.dict[item1].remove(parent_idx)
+			self.dict[item1].add(idx)
+			self.dict[item2].remove(idx)
+			self.dict[item2].add(parent_idx)
 		self.store[parent_idx], self.store[idx] = self.store[idx], self.store[parent_idx]
 
-h = HeapDict()
-h.insert(1, 1, 6, 1, 7, 2, 3, 4, 6)
-h.delete(3)
-h.show()
-print h.include(3)
-print h.index_of(7)
+# NB: Comparator should always be something OR EQUAL TO something else
+# h = HeapDict()
+# h.insert(1)
+# h.delete(1)
+# h.show()
