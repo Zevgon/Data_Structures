@@ -89,6 +89,8 @@ class HeapDict:
 		return not not self.dict[item]
 
 	def index_of(self, val):
+		if not self.include(val):
+			return None
 		for idx in self.dict[val]:
 			break
 		return idx
@@ -140,9 +142,9 @@ class HeapDict:
 		self.dict[item2].remove(idx)
 		self.store[parent_idx], self.store[idx] = self.store[idx], self.store[parent_idx]
 
-# h = HeapDict()
-# h.insert(1, 1, 6, 1, 7, 2, 3, 4, 6)
-# h.delete(3)
-# h.show()
-# print h.include(3)
-# print h.index_of(5)
+h = HeapDict()
+h.insert(1, 1, 6, 1, 7, 2, 3, 4, 6)
+h.delete(3)
+h.show()
+print h.include(3)
+print h.index_of(7)
